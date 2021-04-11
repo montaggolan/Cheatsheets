@@ -4,6 +4,12 @@ nmap -sC -sS -p0-65535 <target>
 # Run nmap against target and scan top 20 ports by doing a connect scan (-sT) and disable ping (-Pn)
 nmap --top-ports=20 -sT -Pn <target>
 
+# TCP connect scan for the top twenty TCP ports, enable OS version detection, script scanning, and traceroute
+nmap -sT -A --top-ports=20 <network> -oG top-port-sweep.txt
+
+# Aggressive scan for port 80 against a /24 network
+nmap -A -p80 --open <network>/24
+
 # SYN Scan
 nmap -sS <target(s)> -oA resultfile
 
@@ -13,11 +19,23 @@ nmap -sU <target>
 # UDP scan + TCP SYN scan:
 nmap -sS -sU <target>
 
+# TCP Stealth/SYN scanning (default)
+nmap -sS <target>
+
+# TCP Connect Scanning
+nmap -sT <target>
+
 # Full TCP connect scan
 nmap <target> -p- -sT --reason --open
 
+# OS figenrprint scan
+nmap -O <target>
+
 # Version Scan
 nmap -sV <target>
+
+# Banner Grabbing/Service Enumeration
+nmap -sV -sT -A <target>
 
 # Run nmap against all ports, grab service banners (-sV), show justification for results (--reason), specify DNS server:
 nmap <target> -p- -sV --reason --dns-server <dns-server-to-be-used>
@@ -31,5 +49,25 @@ nmap -sS -sV --script=default,vuln -p- -T5 <target>
 # Fast portscan:
 nmap -F -sC -sV <target>
 
+# Network sweep
+nmap -sn <network>
+
+# Network sweep with greppable output
+nmap -v -sn <network> -oG sweep.txt
+
 # Port scan against a domain controller through proxychains:
 proxychains nmap -p53,88,135,139,389,445,464,593,636,3268,3269,3389 -sC -sT -Pn <target>
+
+### NMAP Scripting Engine
+
+# Get more info about script
+nmap --script-help <script>
+
+# Attempt a connection to the SMB service on a target system and determine its OS
+nmap <target> --script=smb-os-discovery
+
+# Zone transfer
+nmap --script=dns-zone-transfer -p 53 <target>
+
+# Run all vuln category scripts against a target
+nmap --script vuln <target>
