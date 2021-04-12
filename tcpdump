@@ -1,0 +1,129 @@
+tcpdump options:
+
+-i any : Listen on all interfaces just to see if you’re seeing any traffic.
+-i eth0 : Listen on the eth0 interface.
+-D : Show the list of available interfaces
+-n : Don’t resolve hostnames.
+-nn : Don’t resolve hostnames or port names.
+-q : Be less verbose (more quiet) with your output.
+-t : Give human-readable timestamp output.
+-tttt : Give maximally human-readable timestamp output.
+-X : Show the packet’s contents in both hex and ASCII.
+-XX : Same as -X, but also shows the ethernet header.
+-v, -vv, -vvv : Increase the amount of packet information you get back.
+-c : Only get x number of packets and then stop.
+-s : Define the snaplength (size) of the capture in bytes. Use -s0 to get everything, unless you are intentionally capturing less.
+-S : Print absolute sequence numbers.
+-e : Get the ethernet header as well.
+-q : Show less protocol information.
+-E : Decrypt IPSEC traffic by providing an encryption key.
+
+
+tcpdump expressions allow you to trim out various types of traffic and find exactly what you're looking for. Three main types of expressions include: type, dir, and proto.
+
+Type options: host, net, port.
+Direction lets you do src, dst, and combinations thereof.
+Proto lets you designate protocols: tcp, udp, icmp, ah, and many more.
+
+# To specify an interface:
+tcpdump -i eth0
+
+# Filter by IP:
+tcpdump host 1.2.3.4
+
+# Filtering by source and destination
+tcpdump src 2.3.4.5 and dst not 2.3.4.5
+
+# Find packets going to or from a particular network
+tcpdump net 1.2.3.0/24
+
+# Filter by port
+tcpdump port 3389
+tcpdump src port 1025
+
+# Show traffic of one protocol
+tcpdump icmp
+
+# Show only IPv6 traffic
+tcpdump ip6
+
+# Find traffic using port ranges
+tcpdump portrange 21-23
+
+# Find traffic based on packet size
+tcpdump less 32
+tcpdump greater 64
+tcpdump <= 128
+
+# Writing captures to a file
+tcpdump port 80 -w capture_file
+
+# Read a pcap file
+tcpdump -r capture_file
+
+
+Logical operators:
+and 'or' &&
+or 'or' ||
+not 'or' !
+
+# Find all traffic from 1.2.3.4 going to any host on port 3389
+tcpdump -nnvvS src 1.2.3.4 and dst port 3389
+
+# From one network to another, with hex output with no hostname resolution and one level of extra verbosity:
+tcpdump -nvX src net 192.168.0.0/16 and dst net 10.0.0.0/8 or 172.16.0.0/16
+
+# Non ICMP traffic going to a specific IP
+tcpdump dst 127.0.0.1 and src net and not icmp
+
+# Show all traffic from a host that isn't SSH traffic
+tcpdump -vv src mars and not dst port 22
+
+
+Single quotes are used to tell tcpdump to ignore special characters, for example, brackets (brackets can be used to group statements but need to be escaped):
+tcpdump 'src 127.0.0.1 and (dst port 3389 or 22)'
+
+# tcp[13] looks at offset 13 in the TCP HEADER, and the !=0 means that the flag in question is set to 1, so to show all URGENT (URG) packets:
+tcpdump 'tcp[13] & 32!=0'
+
+# to see ACK packets
+tcpdump 'tcp[13] & 16 != 0'
+
+# PUSH (PSH) packets
+tcpdump 'tcp[13] & 8 != 0'
+
+# RESET (RST) packets:
+tcpdump 'tcp[13] & 4 != 0'
+
+# SYN:
+tcpdump 'tcp[13] & 2 != 0'
+
+# FIN:
+tcpdump 'tcp[13] & 1 != 0'
+
+# SYNACK
+tcpdump 'tcp[13]==18'
+
+# Alternative way to get packets with specific TCP flags set:
+tcpdump 'tcp[tcpflags] == tcp-syn'
+tcpdump 'tcp[tcpflags] == tcp-rst'
+tcpdump 'tcp[tcpflags] == tcp-fin'
+
+
+
+There are also a few quick recipes for catching specific and specialized traffic, such as malformed / likely-malicious packets.
+
+# packets with both the rst and syn flags set (should never happen):
+tcpdump 'tcp[13] = 6'
+
+# find cleartext http get requests:
+tcpdump 'tcp[32:4] = 0x47455420'
+
+# find ssh connections on any port (via banner text)
+tcpdump 'tcp[(tcp[12]>>2):4] = 0x5353482D'
+
+# packets with a ttl less than 10 (usually indicates a problem or use of traceroute)
+tcpdump 'ip[8] < 10'
+
+# packets with the evil bit set
+tcpdump 'ip[6] & 128 != 0'
