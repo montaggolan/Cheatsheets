@@ -77,3 +77,6 @@ nmap --script=dns-zone-transfer -p 53 <target>
 
 # Run all vuln category scripts against a target
 nmap --script vuln <target>
+
+# Discover the endpoints in the network
+nmap --script broadcast-dhcp-disover <target/24>
