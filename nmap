@@ -80,3 +80,6 @@ nmap --script vuln <target>
 
 # Discover the endpoints in the network
 nmap --script broadcast-dhcp-disover <target/24>
+
+# DNS scan
+nmap --script dns-srv-enum --script-args "dns-srv-enum.domain='<domain fqdn>'"
