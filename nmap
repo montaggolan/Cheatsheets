@@ -83,3 +83,6 @@ nmap --script broadcast-dhcp-disover <target/24>
 
 # DNS scan
 nmap --script dns-srv-enum --script-args "dns-srv-enum.domain='<domain fqdn>'"
+
+# Enumerate users on AD
+nmap -p 88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain>',userdb=usernames.txt <target>
