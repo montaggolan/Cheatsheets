@@ -1,4 +1,1 @@
-Cheatsheets:
-
-nmap
-tcpdump
+Various cheatsheets for pentesting.

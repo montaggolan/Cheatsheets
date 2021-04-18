@@ -1,6 +1,9 @@
 # Run nmap with default set of scripts (-sC), SYN scan for faster run time (-sS), against all ports (-p0-65535):
 nmap -sC -sS -p0-65535 <target>
 
+# Run nmap with default scripts, enable service detection and OS detection, output all fromats and store in output.txt
+nmap -sC -sV -O -oA output.txt <target>
+
 # Run nmap against target and scan top 20 ports by doing a connect scan (-sT) and disable ping (-Pn)
 nmap --top-ports=20 -sT -Pn <target>
 
@@ -15,6 +18,9 @@ nmap -sS <target(s)> -oA resultfile
 
 # UDP scan:
 nmap -sU <target>
+
+# UDP scan with OS detection, output to output.txt
+nmap -sU -O -oA output.txt <target>
 
 # UDP scan + TCP SYN scan:
 nmap -sS -sU <target>
