@@ -1,3 +1,6 @@
+# Scan multiple networks at once
+nmap <network1>/24 <network2>/24
+
 # Run nmap with default set of scripts (-sC), SYN scan for faster run time (-sS), against all ports (-p0-65535):
 nmap -sC -sS -p0-65535 <target>
 
@@ -46,6 +49,9 @@ nmap -sV -sT -A <target>
 # Run nmap against all ports, grab service banners (-sV), show justification for results (--reason), specify DNS server:
 nmap <target> -p- -sV --reason --dns-server <dns-server-to-be-used>
 
+# Run a stealth scan through Google DNS servers
+nmap --dns-servers 8.8.4.4,8.8.8.8 -sL <target>
+
 # Target mssql server:
 nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=password,mssql.instance-name=MSSQLSERVER -sV -p 1433 <target>
 
@@ -60,6 +66,9 @@ nmap -sn <network>
 
 # Network sweep with greppable output
 nmap -v -sn <network> -oG sweep.txt
+
+# Use nmap to trace a packet
+nmap -vv -n -sn -PE -T4 --packet-trace <target>
 
 # Port scan against a domain controller through proxychains:
 proxychains nmap -p53,88,135,139,389,445,464,593,636,3268,3269,3389 -sC -sT -Pn <target>
@@ -86,3 +95,6 @@ nmap --script dns-srv-enum --script-args "dns-srv-enum.domain='<domain fqdn>'"
 
 # Enumerate users on AD
 nmap -p 88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain>',userdb=usernames.txt <target>
+
+# Run WAF scan
+nmap -p 443 --script http-waf-detect --script-args="http-waf-detect.aggro,http-waf-detect.detectBodyChanges" <target-hostname>
