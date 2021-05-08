@@ -52,6 +52,9 @@ nmap <target> -p- -sV --reason --dns-server <dns-server-to-be-used>
 # Run a stealth scan through Google DNS servers
 nmap --dns-servers 8.8.4.4,8.8.8.8 -sL <target>
 
+# Run top-ports scan specifying source port to be 80
+nmap --open -Pn -top-ports 1000 -T4 -sS -g80 -sC -sV <target>
+
 # Target mssql server:
 nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=password,mssql.instance-name=MSSQLSERVER -sV -p 1433 <target>
 

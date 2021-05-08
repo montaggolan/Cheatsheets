@@ -1,0 +1,18 @@
+### Port forwarding
+
+# Forward port 443 on <localhost> to port 4444 on <remotehost>
+ssh -N -L <localhost>:443:<remotehost>:4444 root@<remotehost>
+
+# Remote port forward example.
+# Map remote port 22 to local port 1122, and remote 3306 to local 13306
+ssh -R 1122:<localhost>:22 -R 13306:<localhost>:3306 root@<remotehost>
+
+# Reverse dynamic port forwarding
+ssh -f -N -R 1080 -o "UserKnownHostsFile=/dev/null" -o "StrickHostKeyChecking=no" -i <path-to-key> root@<host>
+
+### Tips
+# Create alias for not saving key
+alias sshnok='ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no"'
+
+# SSH with the above alias and specific key, cipher settings:
+sshnok -oKexAlgorithms=+diffe-hellman-group1-sha1 -oCiphers=+aes128-cbc root@<remotehost>
