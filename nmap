@@ -101,3 +101,6 @@ nmap -p 88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain
 
 # Run WAF scan
 nmap -p 443 --script http-waf-detect --script-args="http-waf-detect.aggro,http-waf-detect.detectBodyChanges" <target-hostname>
+
+# Scan mysql/MariaDB with scripts
+nmap -sV -p 3306 --script mysql-* <target>

@@ -1,0 +1,84 @@
+tar <functionoptions> <files>
+# functions:
+-c # create
+-x # extract
+-t # list
+-r # append
+-u # update
+-d # compare files in the archive to those in the filesystem
+# options:
+k # keep any existing files when extracting
+f <filename> # tar file to be read or written is filename
+z # data for to the tar file should be compressed or that data in the tar is gzip compressed
+j # like z, but bzip2
+v # verbose, used multiple times, additional info wil be printed
+
+# tar examples:
+tar cf mt.tar mt # mt.tar is the archive that will be created
+tar -cvvf mt.tar mt
+tar xvf mt.tar
+# The last one creates the subdir mt and places all the files into it, with the same
+# permissions as found on the original system. The new files will be owned by the user
+# running tar unless you are running as root, in which case the original owner is preserved.
+tar tvf <tarfile> # to list the contents
+tar xvf mt.tar mt/mt.c # to extract a single file
+
+# Create backup of $HOME and /usr/src to device on /dev/sdc1
+tar cvf /dev/sdc1 /home/user /usr/src
+
+# If you specify - (hyphen) as the tar file to read or write, the data will be read
+# or written to std i or o. To create a gzipped tar file:
+tar cvf - files... | gzip -9 > tarfile.tar.gz
+# To extract the latter:
+gunzip -c tarfile.tar.gz | tar xvf -
+
+# In some versions of tar, the first letter must be the func, as in c, t, or x.
+
+# The GNU version of tar provides the z option, which automatically creates or extracts gzipped archives:
+tar cvzf tarfile.tar.gz files...
+tar xvzf tarfile.tar.gz
+
+# tar with bzip2
+tar cvf tarfile.tar.bz2 --use-compress-program=gzip2 files...
+tar cvjf tarfile.tar.bz2 files
+
+# cookbook tar file creation and extraction aliases as shell scripts (.bashrc content f.e.)
+tarc ( ) { tar czvf $1.tar.gz $1 }
+tarx ( ) { tar xzvf $1 }
+tart ( ) { tar tzvf $1 }
+
+# tar is useful when making backups. To mirror the entire tree beneath from-stuff to
+# to-stuff, one could use the collowing:
+cd from-stuff
+tar cf - . | (cd ../to-stuff; tar xvf -)
+
+# The basic function of gzip is to take a file, compress it, save the compressed version
+# as filename.gz, and remove the original, uncompressed file if gzip finishes successfully.
+gzip garbage.txt #results in garbage.txt.gz
+
+# You can give gzip a list of filenames also. It will not, by def, compress several files
+# into a single .gz archive.
+# To get info on a gzipped file:
+gzip -l garbage.txt.gz
+
+# To un gzip:
+gunzip garbage.txt.gz #note that the compressed version will be removed
+# Alternative:
+gzip -d garbage.txt.gz
+
+# To uncompress a file to its original filename, use the -N option with gunzip
+mv garbage.txt.gz rubbish.txt.gz
+gunzip -N rubbish.txt.gz # results in garbage.txt, without -N, would result in rubbish.txt
+
+# gzip and gunzip can also compress or uncompress data from standard input and output.
+# If gzip is given no filenames to compress, it attempts to compress data read from standard
+# input. Likewise, if you use the -c option with gunzip, it writes uncompressed data to
+# standard output.
+# For example, you could pipe the output of a command to gzip to compress the output stream
+# and save it to a file in one step:
+ls -laR $HOME | gzip > filelist.gz
+
+# To diplay the contents of a gz
+gunzip -c filelist.gz | more
+
+# zcat is identical to gunzip -c. THere is also zless (like less, but for compressed files).

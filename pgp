@@ -1,0 +1,19 @@
+# create blank keyring file (creates pubring.pkr (public) and secring.skr (private))
+pgp --create-keyrings
+
+# create a key pair
+pgp --gen-key [user ID] --key-type [key type] --bits [bits #] --passphrase [passphrase]
+
+# list keypair
+pgp --list-keys
+
+# export a key
+pgp --export <key ID>
+#
+pgp --export "Owner Name"
+
+# import a key
+pgp --import "Owner Name.asc"
+
+# import a key from a text file containing the PGP key block
+pgp --import "PGP KeyInside.txt"

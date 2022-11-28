@@ -1,0 +1,17 @@
+# list mounted filesystems
+cat /proc/mounts
+
+# wipe partition / drive
+sudo dd if=/dev/zero of=/dev/sdX bs=1k count=2048
+
+# To see if a directory has something mounted on it, as well as the disk space available
+df /some/dir
+
+# To check what nfs filesystems are mounted on your system:
+mount -t nfs
+
+# To examine the availability of NFS services:
+showmount -e <targetSystem>
+
+# make dir with many intermediate dirs
+mkdir -p /someParentDir/someChildDir

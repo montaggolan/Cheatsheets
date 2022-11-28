@@ -1,0 +1,13 @@
+### VNC ###
+
+# start VNC server
+vncserver
+
+# change password for server
+vncpasswd
+
+# make applications use a pre-existing VNC server rather than the normal X display
+xterm -display hostname:2 &
+
+# kill a Unix VNC server #2
+vncserver -kill :2

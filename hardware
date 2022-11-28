@@ -1,0 +1,27 @@
+# The command mt is used to perform a number of functions with tape drives.
+# The following rewinds the tape in the first floppy-tape device
+mt /dev/nqft0 rewind
+
+# Get number of processor cores
+nproc --all
+grep -c ^processor /proc/cpuinfo
+
+# To get info about OpenGL capabilities of the current X11 display
+glxinfo | less
+
+# To start up X, use startx.
+# startx is a frontend to xinit (xinit requires to start all necessary programs manually)
+# startx starts the X server and runs the commands found in the file .xinitrc in your home dir
+
+
+# Use Xorg to check info about your graphics card:
+Xorg -scanpci
+Xorg -probeonly
+
+# you can use the setserial program to configure Rs-232 serial ports
+
+# list loaded drivers
+lsmod
+
+# list available network cards
+lspci | egrep -i --color 'network|ethernet'

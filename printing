@@ -1,0 +1,51 @@
+# if you know all the values when setting up a printer, you can bypass the gui and use lpaadmin
+lpadmin [-E] [-h server] -p printer option..
+
+# to set the default print queue
+lpadmin -d hp4500
+
+# restart CUPS daemon
+/etc/init.d/cupsd restart
+
+# test RS-232 serial printer connectivity, /dev/lp0 is the most common identifier for a parallel printer
+cat /etc/fstab > | /dev/lp0
+
+# to print a program listing, use the classical lpr
+# it starts he printing process by storing the data temporarily
+# to a directory called a print spool
+lpr myprogram.c
+
+# to specify a queue with lpr
+lpr -Psomequeue somefile.c
+
+# to see the status of all print queues
+lpstat -a
+# for specific users
+lpstat -u users
+# specify a queue
+lpstat -p queue
+
+# to find the status of files in the print queue
+lpq
+
+# filter by printer
+lpq DCD-7070W
+
+# to remove a job from the print queue by using the job number
+# obtained with lpq
+lprm 112
+
+# kill all pending printing tasks (need to be root, if not, you only kill your own jobs)
+lprm -
+
+# to see whether a queue is down
+lpc status <printer_name>
+
+# lppasswd changes the CUPS digest password
+
+# to move a job to another queue
+lpmove oldqueue newqueue
+
+# to loacate a USB printer, you can use lsusb
+# you can follow up on the result by viewing /proc/bus/usb/devices
+# if a line containing the string Driver=usblp is present, it means that Linux has recognized the printer as a printer

@@ -1,4 +1,24 @@
-### Port forwarding
+# execute command on remote machine
+ssh -i .ssh/if_key_auth root@remote '/usr/bin/w'
+
+ssh remote_machine /usr/bin/w
+
+# generate key
+ssh-keygen -t rsa -b 4096
+
+# ssh with key
+ssh -i yourKey user@target
+
+# clear loaded keys
+ssh-add -D
+
+# find out server ssh protocol
+telnet server <ssh-port>
+
+### Port forwarding/Tunneling
+
+# establish a secure tunnel on an arbitrary local (3002) TCP port to a remote host (port 112)
+ssh -L 3002:localhost:112 some.site.com
 
 # Forward port 443 on <localhost> to port 4444 on <remotehost>
 ssh -N -L <localhost>:443:<remotehost>:4444 root@<remotehost>
@@ -16,3 +36,18 @@ alias sshnok='ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no
 
 # SSH with the above alias and specific key, cipher settings:
 sshnok -oKexAlgorithms=+diffe-hellman-group1-sha1 -oCiphers=+aes128-cbc root@<remotehost>
+
+
+### SCP
+
+# scp with key
+scp -i yourKey remote:file /local/file
+
+# send a file to a remote computer with scp
+scp /file/to/send user@remote:/where/to/put
+
+# download from remote with scp
+scp user@remote:/file/to/download /where/to/put/on/local
+
+# send files between two remote hosts with scp
+scp username@remote_1:/file/to/send username@remote_2:/where/to/put

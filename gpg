@@ -1,0 +1,27 @@
+# generate a GPG key pair
+gpg --gen-key
+# or with options to select non-default choices
+gpg --full-generate-key
+
+# export a key
+gpg --armor --export user@example.com > akey.asc
+#
+gpg --armor --export <key ID>
+
+# print the info on all keys you have the private key for
+gpg --list-secret-keys [--keyid-format LONG]
+
+# send public key to a keyserver
+gpg --keyserver search.keyserver.net --send-key user@example.com
+
+# send public key to a keyserver configured in ~/.gnupg/gpg.conf
+gpg --send-keys ANI12345
+
+# request a key from a keyserver configured in ~/.gnupg/gpg.conf
+gpg --recv-keys AN123456
+
+# refresh all your keys from a keyserver configured in ~/.gnupg/gpg.conf
+gpg --refresh-keys
+
+# generate revocation certificate
+gpg --output revoke.asc --gen-revoke mykey

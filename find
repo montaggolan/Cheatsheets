@@ -1,0 +1,23 @@
+# find and delete all python bytecode-compiled files
+find . -name \"*.pyc\" -delete
+
+# set setgid bits
+find /path/to/directory -type d -exec chmod g+s '{}' \;
+
+# Find a list of all files that were modified in the last 24 hours:
+find / -mtime -1 \! -type d -print # note the \! - it negates -type d, ! has to be escaped
+
+# The -xdev option can be used to limit find's traversal to the local filesystem.
+
+# /tmp is the dir to search
+# -atime option finds files whose last access time is more than 3 days in the past
+# the -exec means "execute the following command on every file we find"
+# type -d selects directories
+# the \! inverts the selection, just choosing all items except directories
+# The curly braces tell find to "Do it to each file you find, according to the previous selection material."
+# The string \; tells find that the -exec option is finished
+find /tmp \! -type d -atime +3 -exec ls -l {  } \;
+
+# This will give an ls -l listing of each file owned by username.
+# If you have removed the user from /etc/passwd, use the -uid num argument instead of the -user arg
+find / -user username ls

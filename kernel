@@ -1,0 +1,31 @@
+# To add modules during build
+make modules
+make modules_install
+
+# load it
+insmod <module>
+
+# to create a module db
+depmod -a #this will go through all the modules you have and records whether they need any other modules
+
+# load a module
+modprobe <module> #some parameters may be also necessary, can get info with modinfo command
+
+# unload a module from memory (as long as it's not in use)
+rmmod <module>
+
+# get the kernel version
+uname -a
+
+# modprobe can be used to add and remove modules from the kernel
+# you can check /var/log/messages afterwards
+
+# clone kernel configuration
+cd /usr/src/linux
+make cloneconfig
+
+# Show root device encoded in the kernel found in /boot/vmlinuz
+rdev /boot/vmlinuz
+
+# To set the root device from /dev/hda3
+rdev /boot/vmlinuz /dev/hda3

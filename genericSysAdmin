@@ -1,0 +1,178 @@
+# when you encounter a "file x has been locked by another process" or somthing similar,
+# you can use the following command to find out which process is using the file
+sudo lsof /var/log/some.log
+
+# get 10 biggest files in the current directory
+du -s * | sort -n | tail
+
+# quickly rename file
+mv filename.{old,new}
+
+# empty file
+cat /dev/null > somefile
+cp /dev/null filename
+
+# make dir with many intermediate dirs
+mkdir -p /someParentDir/someChildDir
+
+# get effective uid, then real uid and then username
+id -u
+id -u -r
+id -u -n
+
+# get environment variables for a PID
+cat /proc/<PID>/environ
+
+# get the current keyboard configuration
+localectl status
+
+# something with keymap conf
+loadkeys
+
+# used to set a temporary keymap configuration just for current session
+setxkbmap <layout>
+
+# sets the editor to emacs for current session
+export VISUAL=emacs #EDITOR variable could also work
+
+# for C shell
+setenv VISUAL emacs
+
+# check permissions of a file in octal form and/or alphabetic form with the command line tool stat
+stat -c "%a %A" ~/test/
+
+#copy perms of file1 to file2
+chmod --reference file1 file2
+
+# The 1 in the below command is the sticky bit, that prevents users from deleting each
+# other's subdirs
+chmod 1777 /usr/src
+
+# To set the default mode that is assigned to each file you create, you execute the umask command,
+# or put on in your shell's startup file (.bashrc, .cshrc, for example).
+# The umask takes an argument like the absolute mode of chmod, but the meaning of bits is inverted.
+# You have to determine the access you want to grant for user, group, and other, and subract each digit from 7.
+# Then you get a three-digit mask.
+# With the below example: you have full permissions, group has re, and o has nothing
+umask 027
+
+# With chmod, whatever goes before the plus/minus sing is the level of permission, and whatever goes after
+# is the type of permission.
+chmod go+x _file
+
+# This will change the owner and group of _file to someuser
+chown someuser.someuser _file
+
+# This will set the ownership for all files in the home dir used by aclark back to aclark,
+# if you changed the uid for this account
+chown -R aclarck /home/aclarck
+
+# The group permission bits are set using the following chmod:
+chmod g+
+
+# The a options stands for all processes, x includes processes that have no controlling terminal
+ps ax | more
+
+# To look for processes whose name (or at least parts of it) you know:
+ps -C httpd
+
+# cancel at job (job number can be found out with atq):
+atrm <job number>
+
+#tell syslogd to reread its conf after editing syslog.conf
+kill -HUP `cat /var/run/syslog.pid`
+
+# get version of the Linux kernel running on the system
+cat /proc/version
+uname -r
+
+# check disk I/O for every 1 seconds a total fo 3 times with sar
+sar -b 1 3
+
+# to see current utilization broken out by device, you can use the iostat command
+iostat -x 1
+
+# Check os version
+cat /etc/os-release
+lsb_release -a
+hostnamectl
+
+# check if sha256 for file image.iso is same as one in SHA256SUMS
+grep image.iso SHA256SUMS | shasum -a 256 -c
+
+# generate random string (password); -c20 is for setting random bytes to use
+head -c20 /dev/random | base64 | cut -d"=" -f1
+
+# create a patch file
+diff -c hello.c.old hello.c > hello.patch
+
+# use the patch
+patch < hello.patch
+
+# reverse the patch
+patch -R < hello.patch
+
+# indent source file
+indent somefile.c
+
+# shutdown is the general, all-purpose command used to halt or reboot the system. The following will cause a reboot (the -r switch) in 10 min
+shutdown -r +10
+# with comment to other users
+shutdown -r +10 "Goodbye"
+# with absolute time
+shutdown -r 04:20
+# immediate reboot
+shutdown -r now
+# Note that using the -h switch instead of -r will cause the system to simply be halted after shutdown; you can then turn off the system power without
+# fear of losing data. If you specify neither -h nor -r, the system will go into single-user mode.
+# To cancel shutdown, use the -c switch.
+
+# To do a safe reboot of the system
+sbin/shutdown -t3 -rf now
+
+# convert PostScript to PDF via Ghostscript
+ps2pdf
+
+# col is a Unix text filter, for example, its -b option strips the backspace
+# instructions embedded into a manpage
+man cupsd | col -b
+
+#capture video of linux desktop
+ffmpeg -f x11grab -s wxga -r 25 -i :0.0 -sameq /tmp/out.mpg
+
+#create a script of the last command
+echo "!!" > foo.sh
+
+#push a directory to a stack
+pushd /tmp
+
+# reuse all parameters from previous command
+!*
+
+# send message to all terminals:
+sudo wall -n "hello"
+
+# check which commands are in at queue:
+atq
+
+# The following file contains binary data indicating the login times and duration for each user on the system.
+# It is used by the last command to generate a listing of user logins.
+/var/log/wmp
+
+# This contains info on users currently logged into the system. Used by commands such as who, w, and finger.
+/var/run/utmp
+
+# This file is simlar to wtmp but is used by different programs (f. e. finger)
+/var/log/lastlog
+
+# A short shell script that can be used to copy logfiles from time to time to another file and compress it
+mv /var/log/messages /var/log/messages-backup
+cp /dev/null /var/log/messages
+
+CURDATE=`date +"%m%d%y"`
+
+mv /var/log/messages-backup /var/log/messages-$CURDATE
+gzip /var/log/messages-$CURDATE
+
+# to execute text-based programs with wine
+wineconsole program.exe

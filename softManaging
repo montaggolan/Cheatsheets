@@ -1,0 +1,30 @@
+# To install a deb
+sudo dpkg -i some_package
+
+# To fix dependency issues, the latter can be followd by
+sudp apt-get install -f
+
+# To check installed version of package
+pkg-config gtk+-3.0 --modversion
+
+
+# The ldd command can be used to list the sared libraries on which a given executable depends.
+ldd /usr/bin/X11/xterm
+
+apt-get updage #fetches updates to the stable distro
+apt-get upgrade #installs them
+apt-cache show xmns #displays more info about the package xmns
+
+# You can use the following command to find out what packages are installed on a system
+dpkg -l
+
+# You can also use dpkg -l with a specific package
+dpkg -l yelp
+
+# dpkg can also be used to find out the package to which a particular file belongs:
+dpkg --search /bin/false
+
+# To display info about an installed package or archive
+dpkg --status dpkg
+
+# The alien command can convert between various package formats
