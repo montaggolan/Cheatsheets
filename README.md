@@ -1,1 +1,1 @@
-Various cheatsheets for pentesting. Stolen from various resources. Thanks to all original unnamed contributors.
+Various cheatsheets for pentesting/dfir. Stolen from various resources. Thanks to all original unnamed contributors.
