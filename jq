@@ -1,0 +1,2 @@
+# jq convert elasticsearch json output to csv
+cat file.json | jq -r '.rawResponse.hits.hits[] | { "Event Action": .fields."event.action"[0],"Source IP": .fields."source.ip"[0],"Timestamp": .fields."@timestamp"[0]} | [.[]] | @csv'
